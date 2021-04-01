@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
 import sys
 
 df = pd.read_csv('titanic/train.csv')
@@ -77,22 +78,23 @@ arr_test = np.array(df_test)
 y_train = arr_train[:,0]
 y_test = arr_test[:,0]
 
-X_train = arr_train[:,1:]
-X_test = arr_test[:,1:]
+x_train = arr_train[:,1:]
+x_test = arr_test[:,1:]
 
-regressor = LinearRegression()
-regressor.fit(X_train, y_train)
+regressor = LogisticRegression()
+regressor.fit(x_train, y_train)
 
 coef_dict = {}
 feature_columns = df_train.columns[1:]
 feature_coefficients = regressor.coef_
+
 for i in range(len(feature_columns)):
   column = feature_columns[i]
-  coefficient = feature_coefficients[i]
+  coefficient = feature_coefficients[0][i]
   coef_dict[column] = coefficient
 
-y_test_predictions = regressor.predict(X_test)
-y_train_predictions = regressor.predict(X_train)
+y_test_predictions = regressor.predict(x_test)
+y_train_predictions = regressor.predict(x_train)
 
 def convert_regressor_output_to_survival_value(output):
   if output < 0.5:
@@ -118,5 +120,5 @@ print('\nfeatures:', features_to_use)
 print('\ntraining accuracy:', get_accuracy(y_train_predictions, y_train))
 print('testing accuracy:', get_accuracy(y_test_predictions, y_test), '\n')
 
-coef_dict['constant'] = regressor.intercept_
-print('coefficients', {k:round(v,4) for k,v in coef_dict.items()})
+coef_dict['constant'] = regressor.intercept_[0]
+print('coefficients', {a:round(b,4) for a,b in coef_dict.items()})
