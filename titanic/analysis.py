@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import PolynomialFeatures
 import sys
 
-df = pd.read_csv('titanic/train.csv')
+df = pd.read_csv('titanic/csv/train.csv')
 
 keep_cols = ['Survived', 'Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Cabin', 'Embarked']
 df = df[keep_cols]
@@ -134,6 +134,8 @@ for term in terms:
     sib = 'Sib' in term and 'Sib' in term_2
     if not embarked and not cabin and not sib:
       interaction_list.append(term + ' * ' + term_2)
+
+print('interaction_list', interaction_list)
 
 for term in interaction_list:
   interactions = term.split(' * ')
