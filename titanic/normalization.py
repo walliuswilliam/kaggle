@@ -65,4 +65,5 @@ plt.title('Leave-One-Out Accuracy for Various Normalizations')
 plt.savefig('titanic/plots/normalization.png')
 
 end_time = time.time()
-print('time taken:', (end_time - start_time)/2, 'seconds')
+print('relative time taken:', (end_time - start_time)/2, 'seconds')
+print('real time:', end_time - start_time)
